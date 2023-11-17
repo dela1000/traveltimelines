@@ -1,0 +1,85 @@
+<!DOCTYPE >
+<html ng-app="countriesApp">
+  <head>
+    <title>Countries Visited</title>
+  </head>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- flag icons -->
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.7.0/css/flag-icon.css"
+  />
+  <!-- Angular -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="http://code.angularjs.org/1.2.11/angular-animate.min.js"></script>
+  <script src="http://angular-ui.github.io/ui-router/release/angular-ui-router.min.js"></script>
+  <!-- amCharts Map -->
+  <script src="https://www.amcharts.com/lib/3/ammap.js" type="text/javascript"></script>
+  <script src="https://www.amcharts.com/lib/3/maps/js/worldHigh.js" type="text/javascript"></script>
+  <script src="https://www.amcharts.com/lib/3/themes/dark.js" type="text/javascript"></script>
+  <!-- Lodash -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+  <!-- App -->
+  <script src="app.js" type="text/javascript"></script>
+  <script src="dsServices.js" charset="utf-8"></script>
+  <script src="rndServices.js" charset="utf-8"></script>
+  <script src="keyProvider.js"></script>
+
+  <body ng-controller="countryMapController">
+    <!-- From https://www.amcharts.com/visited_countries/# -->
+    <div class="p-4" style="background-color: #ededed">
+      <div class="mx-auto max-w-screen">
+        <div id="mapdiv" style="width: auto; height: 850px"></div>
+        <div>
+          <div class="m-2">
+            <div class="inline-flex rounded-md shadow-sm" role="group">
+              <button
+                type="button"
+                class="px-4 py-2 text-sm font-medium text-blue-900 bg-white border border-blue-200 rounded-s-lg hover:bg-blue-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-blue-700 dark:border-blue-600 dark:text-white dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-500 dark:focus:text-white"
+                ng-disabled="disableButton"
+                ng-click="switchTimelines()"
+              >
+                Selected Timeline: {{selectedTimeline}}
+              </button>
+
+              <button
+                type="button"
+                class="px-4 py-2 text-sm font-medium text-blue-900 bg-white border border-blue-200 rounded-e-lg hover:bg-blue-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-blue-700 dark:border-blue-600 dark:text-white dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-500 dark:focus:text-white"
+                ng-disabled="disableButton"
+                ng-class="{'bg-gray-900': !disableButton}"
+                ng-click="switchSpeedOption()"
+              >
+                {{speedOption}}
+              </button>
+            </div>
+          </div>
+
+          <div class="m-2">
+            <button
+              id="showtimeline"
+              class="px-4 py-2 text-sm font-medium text-blue-900 bg-white border border-blue-200 rounded-lg hover:bg-blue-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-blue-700 dark:border-blue-600 dark:text-white dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-500 dark:focus:text-white"
+              ng-disabled="disableButton"
+              ng-click="HandleGroupCitiesByMonthWithTimer()"
+            >
+              Show timeline
+            </button>
+            <button
+              id="stopButton"
+              class="px-4 py-2 text-sm font-medium bg-white border rounded-lg border-red-500 text-red-500 hover:bg-red-100 hover:text-red-700 focus:z-10 focus:ring-2 focus:ring-red-700 focus:text-red-700 dark:bg-red-700 dark:border-red-600 dark:text-white dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-500 dark:focus:text-white"
+              ng-click="stopGroupCitiesByMonthWithTimer()"
+            >
+              Stop
+            </button>
+          </div>
+        </div>
+
+        <div ng-repeat="city in groupedCitiesCopy" ng-if="$last" class="text-center mt-4">
+          <div>Last City: {{ city.city }}, {{ city.name }}</div>
+          <div>Last Date Visited: {{ city.dateVisited }}</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
